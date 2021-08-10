@@ -1,6 +1,6 @@
+import { ChakraProvider } from '@chakra-ui/react'
 import type { AppProps } from 'next/app'
 import { QueryClient, QueryClientProvider } from 'react-query'
-import 'tailwindcss/tailwind.css'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -14,7 +14,9 @@ const queryClient = new QueryClient({
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
-      <Component {...pageProps} />
+      <ChakraProvider>
+        <Component {...pageProps} />
+      </ChakraProvider>
     </QueryClientProvider>
   )
 }

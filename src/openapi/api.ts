@@ -19,6 +19,37 @@ import globalAxios, { AxiosPromise, AxiosInstance } from 'axios';
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from './base';
 
+/**
+ * 
+ * @export
+ * @interface Todo
+ */
+export interface Todo {
+    /**
+     * 
+     * @type {string}
+     * @memberof Todo
+     */
+    title: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof Todo
+     */
+    done: boolean;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof Todo
+     */
+    tags: Array<string>;
+    /**
+     * 
+     * @type {Todo}
+     * @memberof Todo
+     */
+    parent?: Todo;
+}
 
 /**
  * DefaultApi - axios parameter creator
@@ -57,14 +88,14 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @param {object} body 
+         * @param {Todo} todo 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        todosControllerCreate: async (body: object, options: any = {}): Promise<RequestArgs> => {
-            // verify required parameter 'body' is not null or undefined
-            if (body === null || body === undefined) {
-                throw new RequiredError('body','Required parameter body was null or undefined when calling todosControllerCreate.');
+        todosControllerCreate: async (todo: Todo, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'todo' is not null or undefined
+            if (todo === null || todo === undefined) {
+                throw new RequiredError('todo','Required parameter todo was null or undefined when calling todosControllerCreate.');
             }
             const localVarPath = `/todos`;
             const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
@@ -85,8 +116,8 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             delete localVarUrlObj.search;
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+            const needsSerialization = (typeof todo !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(todo !== undefined ? todo : {}) : (todo || "");
 
             return {
                 url: globalImportUrl.format(localVarUrlObj),
@@ -209,12 +240,12 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {object} body 
+         * @param {Todo} todo 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async todosControllerCreate(body: object, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).todosControllerCreate(body, options);
+        async todosControllerCreate(todo: Todo, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).todosControllerCreate(todo, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -250,7 +281,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async todosControllerFindAll(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<object>>> {
+        async todosControllerFindAll(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Todo>>> {
             const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).todosControllerFindAll(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -276,12 +307,12 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
-         * @param {object} body 
+         * @param {Todo} todo 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        todosControllerCreate(body: object, options?: any): AxiosPromise<void> {
-            return DefaultApiFp(configuration).todosControllerCreate(body, options).then((request) => request(axios, basePath));
+        todosControllerCreate(todo: Todo, options?: any): AxiosPromise<void> {
+            return DefaultApiFp(configuration).todosControllerCreate(todo, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -305,7 +336,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        todosControllerFindAll(options?: any): AxiosPromise<Array<object>> {
+        todosControllerFindAll(options?: any): AxiosPromise<Array<Todo>> {
             return DefaultApiFp(configuration).todosControllerFindAll(options).then((request) => request(axios, basePath));
         },
     };
@@ -330,13 +361,13 @@ export class DefaultApi extends BaseAPI {
 
     /**
      * 
-     * @param {object} body 
+     * @param {Todo} todo 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public todosControllerCreate(body: object, options?: any) {
-        return DefaultApiFp(this.configuration).todosControllerCreate(body, options).then((request) => request(this.axios, this.basePath));
+    public todosControllerCreate(todo: Todo, options?: any) {
+        return DefaultApiFp(this.configuration).todosControllerCreate(todo, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
