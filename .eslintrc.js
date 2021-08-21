@@ -5,6 +5,7 @@ module.exports = {
     es2021: true,
     node: true,
   },
+  ignorePatterns: ['src/openapi'],
   parser: '@typescript-eslint/parser',
   plugins: ['react-hooks', 'react', '@typescript-eslint'],
   extends: [

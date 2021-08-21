@@ -10,6 +10,7 @@
     "codegen": "openapi-generator-cli generate -i http://localhost:3000/api-json -g typescript-axios -c ./openapi.config.json -o ./src/openapi"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^1.0.15",
     "@chakra-ui/react": "^1.6.6",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",

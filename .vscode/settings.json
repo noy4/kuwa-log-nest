@@ -8,5 +8,6 @@
     "public": true,
     "README.md": true,
     "yarn.lock": true
-  }
+  },
+  "editor.tabSize": 2
 }

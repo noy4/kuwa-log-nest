@@ -1,4 +1,5 @@
-// tslint:disable
+/* tslint:disable */
+/* eslint-disable */
 /**
  * Todos
  * Todosだよん
@@ -12,19 +13,57 @@
  */
 
 
-import * as globalImportUrl from 'url';
 import { Configuration } from './configuration';
 import globalAxios, { AxiosPromise, AxiosInstance } from 'axios';
 // Some imports not used depending on template conditions
+// @ts-ignore
+import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from './common';
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from './base';
 
 /**
  * 
  * @export
+ * @interface CreateTodoDto
+ */
+export interface CreateTodoDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateTodoDto
+     */
+    title: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CreateTodoDto
+     */
+    done: boolean;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof CreateTodoDto
+     */
+    tags: Array<string>;
+    /**
+     * 
+     * @type {Todo}
+     * @memberof CreateTodoDto
+     */
+    parent?: Todo;
+}
+/**
+ * 
+ * @export
  * @interface Todo
  */
 export interface Todo {
+    /**
+     * 
+     * @type {string}
+     * @memberof Todo
+     */
+    id: string;
     /**
      * 
      * @type {string}
@@ -64,45 +103,45 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          */
         appControllerGetHello: async (options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/`;
-            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
             if (configuration) {
                 baseOptions = configuration.baseOptions;
             }
+
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
 
     
-            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
-                url: globalImportUrl.format(localVarUrlObj),
+                url: toPathString(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         },
         /**
          * 
-         * @param {Todo} todo 
+         * @param {object} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        todosControllerCreate: async (todo: Todo, options: any = {}): Promise<RequestArgs> => {
-            // verify required parameter 'todo' is not null or undefined
-            if (todo === null || todo === undefined) {
-                throw new RequiredError('todo','Required parameter todo was null or undefined when calling todosControllerCreate.');
-            }
-            const localVarPath = `/todos`;
-            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+        dogsControllerCreate: async (body: object, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'body' is not null or undefined
+            assertParamExists('dogsControllerCreate', 'body', body)
+            const localVarPath = `/dogs`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
             if (configuration) {
                 baseOptions = configuration.baseOptions;
             }
+
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
@@ -111,16 +150,182 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
     
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
-            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            const needsSerialization = (typeof todo !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(todo !== undefined ? todo : {}) : (todo || "");
+            localVarRequestOptions.data = serializeDataIfNeeded(body, localVarRequestOptions, configuration)
 
             return {
-                url: globalImportUrl.format(localVarUrlObj),
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        dogsControllerFindAll: async (options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/dogs`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        dogsControllerFindOne: async (id: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('dogsControllerFindOne', 'id', id)
+            const localVarPath = `/dogs/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        dogsControllerRemove: async (id: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('dogsControllerRemove', 'id', id)
+            const localVarPath = `/dogs/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {object} body 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        dogsControllerUpdate: async (id: string, body: object, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('dogsControllerUpdate', 'id', id)
+            // verify required parameter 'body' is not null or undefined
+            assertParamExists('dogsControllerUpdate', 'body', body)
+            const localVarPath = `/dogs/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(body, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {CreateTodoDto} createTodoDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        todosControllerCreate: async (createTodoDto: CreateTodoDto, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'createTodoDto' is not null or undefined
+            assertParamExists('todosControllerCreate', 'createTodoDto', createTodoDto)
+            const localVarPath = `/todos`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(createTodoDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         },
@@ -132,30 +337,28 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          */
         todosControllerDelete: async (id: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            if (id === null || id === undefined) {
-                throw new RequiredError('id','Required parameter id was null or undefined when calling todosControllerDelete.');
-            }
+            assertParamExists('todosControllerDelete', 'id', id)
             const localVarPath = `/todos/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
-            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
             if (configuration) {
                 baseOptions = configuration.baseOptions;
             }
+
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
 
     
-            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
-                url: globalImportUrl.format(localVarUrlObj),
+                url: toPathString(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         },
@@ -166,25 +369,25 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          */
         todosControllerDeleteAll: async (options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/todos`;
-            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
             if (configuration) {
                 baseOptions = configuration.baseOptions;
             }
+
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
 
     
-            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
-                url: globalImportUrl.format(localVarUrlObj),
+                url: toPathString(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         },
@@ -195,25 +398,93 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          */
         todosControllerFindAll: async (options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/todos`;
-            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
             if (configuration) {
                 baseOptions = configuration.baseOptions;
             }
+
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
 
     
-            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
-                url: globalImportUrl.format(localVarUrlObj),
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        todosControllerFindById: async (id: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('todosControllerFindById', 'id', id)
+            const localVarPath = `/todos/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {Todo} todo 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        todosControllerUpdate: async (todo: Todo, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'todo' is not null or undefined
+            assertParamExists('todosControllerUpdate', 'todo', todo)
+            const localVarPath = `/todos`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(todo, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         },
@@ -225,6 +496,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
  * @export
  */
 export const DefaultApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = DefaultApiAxiosParamCreator(configuration)
     return {
         /**
          * 
@@ -232,24 +504,68 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         async appControllerGetHello(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).appControllerGetHello(options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
+            const localVarAxiosArgs = await localVarAxiosParamCreator.appControllerGetHello(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 
-         * @param {Todo} todo 
+         * @param {object} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async todosControllerCreate(todo: Todo, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).todosControllerCreate(todo, options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
+        async dogsControllerCreate(body: object, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dogsControllerCreate(body, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async dogsControllerFindAll(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dogsControllerFindAll(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async dogsControllerFindOne(id: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dogsControllerFindOne(id, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async dogsControllerRemove(id: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dogsControllerRemove(id, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {object} body 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async dogsControllerUpdate(id: string, body: object, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.dogsControllerUpdate(id, body, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {CreateTodoDto} createTodoDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async todosControllerCreate(createTodoDto: CreateTodoDto, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Todo>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.todosControllerCreate(createTodoDto, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 
@@ -258,11 +574,8 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         async todosControllerDelete(id: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).todosControllerDelete(id, options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
+            const localVarAxiosArgs = await localVarAxiosParamCreator.todosControllerDelete(id, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 
@@ -270,11 +583,8 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         async todosControllerDeleteAll(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).todosControllerDeleteAll(options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
+            const localVarAxiosArgs = await localVarAxiosParamCreator.todosControllerDeleteAll(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 
@@ -282,11 +592,28 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @throws {RequiredError}
          */
         async todosControllerFindAll(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Todo>>> {
-            const localVarAxiosArgs = await DefaultApiAxiosParamCreator(configuration).todosControllerFindAll(options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
+            const localVarAxiosArgs = await localVarAxiosParamCreator.todosControllerFindAll(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async todosControllerFindById(id: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Todo>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.todosControllerFindById(id, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {Todo} todo 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async todosControllerUpdate(todo: Todo, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Todo>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.todosControllerUpdate(todo, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
 };
@@ -296,6 +623,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
  * @export
  */
 export const DefaultApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = DefaultApiFp(configuration)
     return {
         /**
          * 
@@ -303,16 +631,61 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @throws {RequiredError}
          */
         appControllerGetHello(options?: any): AxiosPromise<void> {
-            return DefaultApiFp(configuration).appControllerGetHello(options).then((request) => request(axios, basePath));
+            return localVarFp.appControllerGetHello(options).then((request) => request(axios, basePath));
         },
         /**
          * 
-         * @param {Todo} todo 
+         * @param {object} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        todosControllerCreate(todo: Todo, options?: any): AxiosPromise<void> {
-            return DefaultApiFp(configuration).todosControllerCreate(todo, options).then((request) => request(axios, basePath));
+        dogsControllerCreate(body: object, options?: any): AxiosPromise<void> {
+            return localVarFp.dogsControllerCreate(body, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        dogsControllerFindAll(options?: any): AxiosPromise<void> {
+            return localVarFp.dogsControllerFindAll(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        dogsControllerFindOne(id: string, options?: any): AxiosPromise<void> {
+            return localVarFp.dogsControllerFindOne(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        dogsControllerRemove(id: string, options?: any): AxiosPromise<void> {
+            return localVarFp.dogsControllerRemove(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {object} body 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        dogsControllerUpdate(id: string, body: object, options?: any): AxiosPromise<void> {
+            return localVarFp.dogsControllerUpdate(id, body, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {CreateTodoDto} createTodoDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        todosControllerCreate(createTodoDto: CreateTodoDto, options?: any): AxiosPromise<Todo> {
+            return localVarFp.todosControllerCreate(createTodoDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -321,7 +694,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @throws {RequiredError}
          */
         todosControllerDelete(id: string, options?: any): AxiosPromise<void> {
-            return DefaultApiFp(configuration).todosControllerDelete(id, options).then((request) => request(axios, basePath));
+            return localVarFp.todosControllerDelete(id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -329,7 +702,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @throws {RequiredError}
          */
         todosControllerDeleteAll(options?: any): AxiosPromise<void> {
-            return DefaultApiFp(configuration).todosControllerDeleteAll(options).then((request) => request(axios, basePath));
+            return localVarFp.todosControllerDeleteAll(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -337,7 +710,25 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @throws {RequiredError}
          */
         todosControllerFindAll(options?: any): AxiosPromise<Array<Todo>> {
-            return DefaultApiFp(configuration).todosControllerFindAll(options).then((request) => request(axios, basePath));
+            return localVarFp.todosControllerFindAll(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        todosControllerFindById(id: string, options?: any): AxiosPromise<Todo> {
+            return localVarFp.todosControllerFindById(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {Todo} todo 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        todosControllerUpdate(todo: Todo, options?: any): AxiosPromise<Todo> {
+            return localVarFp.todosControllerUpdate(todo, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -361,13 +752,68 @@ export class DefaultApi extends BaseAPI {
 
     /**
      * 
-     * @param {Todo} todo 
+     * @param {object} body 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public todosControllerCreate(todo: Todo, options?: any) {
-        return DefaultApiFp(this.configuration).todosControllerCreate(todo, options).then((request) => request(this.axios, this.basePath));
+    public dogsControllerCreate(body: object, options?: any) {
+        return DefaultApiFp(this.configuration).dogsControllerCreate(body, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public dogsControllerFindAll(options?: any) {
+        return DefaultApiFp(this.configuration).dogsControllerFindAll(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} id 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public dogsControllerFindOne(id: string, options?: any) {
+        return DefaultApiFp(this.configuration).dogsControllerFindOne(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} id 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public dogsControllerRemove(id: string, options?: any) {
+        return DefaultApiFp(this.configuration).dogsControllerRemove(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} id 
+     * @param {object} body 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public dogsControllerUpdate(id: string, body: object, options?: any) {
+        return DefaultApiFp(this.configuration).dogsControllerUpdate(id, body, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {CreateTodoDto} createTodoDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public todosControllerCreate(createTodoDto: CreateTodoDto, options?: any) {
+        return DefaultApiFp(this.configuration).todosControllerCreate(createTodoDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -401,6 +847,27 @@ export class DefaultApi extends BaseAPI {
         return DefaultApiFp(this.configuration).todosControllerFindAll(options).then((request) => request(this.axios, this.basePath));
     }
 
+    /**
+     * 
+     * @param {string} id 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public todosControllerFindById(id: string, options?: any) {
+        return DefaultApiFp(this.configuration).todosControllerFindById(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {Todo} todo 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public todosControllerUpdate(todo: Todo, options?: any) {
+        return DefaultApiFp(this.configuration).todosControllerUpdate(todo, options).then((request) => request(this.axios, this.basePath));
+    }
 }
 
 
